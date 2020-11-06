@@ -5,18 +5,29 @@
 
 makeCacheMatrix <- function(x = matrix()) {
   mat <- x
+  inv <- NULL
   get <- function() { 
     mat
   }
   set <- function(m) {
     mat <<- m
+    inv <<- NULL
   }
-  list(get = get, set = set)
+  getInv <- function() {
+    inv
+  }
+  setInv <- function(i) {
+    inv <<- i
+  }
+  list(get = get, set = set, getInv = getInv, setInv = setInv)
 }
 
 
 ## Write a short comment describing this function
 
 cacheSolve <- function(x, ...) {
-  solve(x$get())
+  if (is.null(x$getInv())) {
+    x$setInv(solve(x$get()))
+  }
+  x$getInv()
 }
